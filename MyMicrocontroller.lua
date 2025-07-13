@@ -112,7 +112,7 @@ function onDraw()
     local x_pos = P_X
     local y_pos = P_Y + 48000
     local t = 0
-    local y_vel = -100
+    local y_vel = 0
 
     local path = {}
     local min_x, max_x = math.huge, -math.huge
@@ -184,9 +184,9 @@ function onDraw()
         local p2 = path[i]
 
         local x1 = screen_remap(p1.x, min_x, max_x, width)
-        local y1 = screen_remap(p1.y, min_y, max_y, height)
+        local y1 = screen_remap(p1.y, max_y, min_y, height)
         local x2 = screen_remap(p2.x, min_x, max_x, width)
-        local y2 = screen_remap(p2.y, min_y, max_y, height)
+        local y2 = screen_remap(p2.y, max_y, min_y, height)
 
         screen.drawLine(x1, y1, x2, y2)
     end
