@@ -65,7 +65,7 @@ function accel(v, d)
 end
 
 function screen_remap(location, min_range, max_range, screen_size)
-    return screen_size * ((location - min_range) * (max_range - min_range))
+    return screen_size * ((location - min_range) / (max_range - min_range))
 end
 
 function onTick()
