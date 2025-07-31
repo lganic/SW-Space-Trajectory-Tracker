@@ -27,6 +27,7 @@ do
         simulator:setInputNumber(2, screenConnection.height)
         simulator:setInputNumber(3, screenConnection.touchX)
         simulator:setInputNumber(4, screenConnection.touchY)
+        simulator:setInputNumber(5, ticks)
 
         -- NEW! button/slider options from the UI
         simulator:setInputBool(31, simulator:getIsClicked(1))     -- if button 1 is clicked, provide an ON pulse for input.getBool(31)
