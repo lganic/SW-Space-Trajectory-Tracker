@@ -403,8 +403,8 @@ function onDraw()
         max_x = math.max(max_x, 2.155 * K)
         min_y = math.min(min_y, .8 * K)
         max_y = math.max(max_y, .8 * K)
-        --min_z = math.min(min_z, -15500)
-        --max_z = math.min(min_z, 15500)
+        min_z = math.min(min_z, -15500)
+        max_z = math.max(max_z, 15500)
     end
 
     -- TODO: Target view focusing
