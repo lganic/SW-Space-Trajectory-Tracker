@@ -27,6 +27,24 @@ do
 
         local screenConnection = simulator:getTouchScreen(1)
         simulator:setInputBool(1, screenConnection.isTouched)
+
+        local A = 2
+        local V0 = 0
+        local P0 = 0
+
+        local VX = 7
+        local VZ = 5
+
+        -- simulator:setInputNumber(1, 0)
+        -- simulator:setInputNumber(2, 0)
+        -- simulator:setInputNumber(3, 0)
+
+        local time = ticks / 60
+
+        simulator:setInputNumber(1, VX * time)
+        simulator:setInputNumber(2, (A * time * time / 2) + V0 * time + P0)
+        simulator:setInputNumber(3, VZ * time)
+
         simulator:setInputNumber(7, screenConnection.touchX)
         simulator:setInputNumber(8, screenConnection.touchY)
     end;
@@ -93,7 +111,7 @@ end
 function accel(v, d)
     G = 10
     R = (100000 / 3) * (1 + math.sqrt(10))
-    return 1 + (v / 100) - (G * R * R) / ((R + d) ^ 2)
+    return math.min(1, d / 40000) + (v / 100) - (G * R * R) / ((R + d) ^ 2)
 end
 
 function screen_remap(location, min_range, max_range, screen_size)
@@ -360,11 +378,11 @@ function onDraw()
 
         table.insert(path, { x = x_pos, y = y_pos, z = z_pos})
 
-        -- If altitude is less than zero, or greater than 15 minutes in path time. Or if altitude is greater than 500k (altitude probably runaway)
+        -- If altitude is less than zero, or greater than 10 minutes in path time. Or if altitude is greater than 500k (altitude probably runaway)
         -- There is a special case here, that if you are above 500k, the projected path can go above its 500k cap, up to 100k + your current alt
         -- this is to ensure that you always have a decent idea of your trajectory. 
 
-        if y_pos <= 0 or y_pos > math.max(5*K, P_Y[1] + K) or t > 900 then
+        if y_pos <= 0 or y_pos > math.max(5*K, P_Y[1] + K) or t > 600 then
             satisfied = true
         end
     end
