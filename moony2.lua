@@ -374,12 +374,20 @@ function onDraw()
         min_z = math.min(min_z, z_pos)
         max_z = math.max(max_z, z_pos)
 
+        if n_y_pos < 0 then
+
+            -- Create estimate of actual impact point based on projected position, by assuming a linear trajectory between pos, and new position
+
+            local lerp_value = y_pos / (y_pos - n_y_pos)
+            n_x_pos = (n_x_pos - x_pos) * lerp_value + x_pos
+            n_z_pos = (n_z_pos - z_pos) * lerp_value + z_pos
+
+            n_y_pos = 0 -- Cap y position, cause alt can never be negative. This allows us to detect a ground impact point later
+        end
+
         x_pos = n_x_pos
         y_pos = n_y_pos
         z_pos = n_z_pos
-
-        y_pos = math.max(0, y_pos) -- Cap y position, cause alt can never be negative. This allows us to detect a ground impact point later
-        -- Todo: adjust last x position to correct offset bug. Not a problem, just a weird graphical thing.
 
         table.insert(path, { x = x_pos, y = y_pos, z = z_pos})
 
