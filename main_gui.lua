@@ -247,6 +247,44 @@ function addVec(a,b)
 	return r
 end
 
+function pointInCircle(circle_x, circle_y, point_x, point_y, radius)
+    return (circle_x - point_x) ^ 2 + (circle_y - point_y) ^ 2 < radius ^ 2
+end
+
+function pointInSquare(point_x, point_y, length)
+    -- Check if a point is in a square with a certain side length. For compactness, the square is centered at 0,0
+
+    length = length / 2
+
+    in_x_range = (point_x < length) and (point_x > -length)
+    in_y_range = (point_y < length) and (point_y > -length)
+
+    return in_x_range and in_y_range
+end
+
+function pointInWarpZone(x, y, z)
+
+    if pointInCircle(K, 1.28 * K, x, y, .6 * K) then
+        return true
+    end
+
+    if x < 1.4 * K then
+
+        if y < .4 * K then
+            return pointInSquare(x, z, 1.28 * K)
+        end
+
+        if y < 1.28 * K then
+            return pointInSquare(x, Z, .4 * K)
+        end
+    else
+        -- Once I figure out if there are moon side warp zones, they will go here.
+        return false
+    end
+
+    return false
+end
+
 function onTick()
 	moonmode = input.getBool(1)
 	x = input.getNumber(1)
@@ -397,6 +435,10 @@ function onDraw()
         -- this is to ensure that you always have a decent idea of your trajectory. 
 
         if y_pos <= 0 or y_pos > math.max(3.5*K, P_Y[1] + K) or t > 600 then
+            satisfied = true
+        end
+
+        if pointInWarpZone(x_pos, y_pos, z_pos) then
             satisfied = true
         end
 
