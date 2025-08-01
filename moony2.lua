@@ -630,17 +630,17 @@ function onDraw()
 
     focus_boxpos = height - CONTROLS_HEIGHT + 1
 
-    Focus_Moon = simple_button(32, focus_boxpos + 2, "Moon", Focus_Moon)
-    Focus_Target = simple_button(56, focus_boxpos + 2, "Tgt", Focus_Target)
-    Focus_Earth = simple_button(75, focus_boxpos + 2, "Earth", Focus_Earth)
+    Focus_Moon = simple_button(23, focus_boxpos + 2, "Moon", Focus_Moon)
+    Focus_Target = simple_button(47, focus_boxpos + 2, "Tgt", Focus_Target)
+    Focus_Earth = simple_button(66, focus_boxpos + 2, "Earth", Focus_Earth)
 
     LifeBoatAPI.LBColorSpace.lbcolorspace_setColorGammaCorrected(120, 120, 120, 255)
 
-    screen.drawRect(30, focus_boxpos, 74, 12)
+    screen.drawRect(21, focus_boxpos, 74, 12)
 
     LifeBoatAPI.LBColorSpace.lbcolorspace_setColorGammaCorrected(0, 0, 0, 255)
 
-    screen.drawText(2, focus_boxpos + 4, "Focus:")
+    screen.drawText(2, focus_boxpos + 4, "Foc:")
 
 
     -- Debug text
