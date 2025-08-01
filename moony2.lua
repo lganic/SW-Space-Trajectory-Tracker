@@ -510,6 +510,17 @@ function onDraw()
         screen.drawLine(x1, y1, x2, y2)
     end
 
+        -- If last point is an impact point, then draw an X there. 
+
+    last_point = path[#path]
+    if last_point.y == 0 then
+        LifeBoatAPI.LBColorSpace.lbcolorspace_setColorGammaCorrected(255, 0, 0, 255)
+        local cx = screen_remap(last_point.x, min_x, max_x, width_d2) + width_d2
+        local cy = screen_remap(last_point.z, max_z, min_z, reduced_height)
+        screen.drawLine(cx - 2, cy - 2, cx + 2, cy + 2)
+        screen.drawLine(cx + 2, cy - 2, cx - 2, cy + 2)
+    end
+
     -- Draw ship
     local ship_x = screen_remap(X[1], min_x, max_x, width_d2) + width_d2
     local ship_y = screen_remap(Z[1], max_z, min_z, reduced_height)
@@ -625,8 +636,8 @@ function onDraw()
         LifeBoatAPI.LBColorSpace.lbcolorspace_setColorGammaCorrected(255, 0, 0, 255)
         local cx = screen_remap(last_point.x, min_x, max_x, width_d2)
         local cy = screen_remap(last_point.y, max_y, min_y, reduced_height)
-        screen.drawLine(cx - 3, cy - 3, cx + 3, cy + 3)
-        screen.drawLine(cx + 3, cy - 3, cx - 3, cy + 3)
+        screen.drawLine(cx - 2, cy - 2, cx + 2, cy + 2)
+        screen.drawLine(cx + 2, cy - 2, cx - 2, cy + 2)
     end
 
     -- Draw the ship position
