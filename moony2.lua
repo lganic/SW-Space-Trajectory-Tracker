@@ -74,7 +74,7 @@ Y = {0,0,0}
 Z = {0,0,0}
 
 K = 100000
-R = 0.0005
+R = 0.000001
 
 Ground_Velocity = 0
 
@@ -102,7 +102,7 @@ Touch_Y = 0
 Is_Touch = false
 Action_Taken = false
 
-RENDER_MARGINS_LERP = .04
+RENDER_MARGINS_LERP = .1
 
 LOGO_FRAME_TIME = 60
 Logo_Frame_Count = 0
@@ -272,23 +272,23 @@ function onTick()
     -- X
     pred = transform(A, X)
     Ppred = add(multiply(multiply(A, P_X), transpose(A)), Q)
-    KM = scaleVec(transform(Ppred, H),1 / (dot(H,transform(Ppred, H)) + R))
-	X = addVec(pred, scaleVec(KM, (x - dot(H,pred))))
-	P_X = sub(Ppred, scaleMat(Ppred, dot(KM,H)))
+    KM = scaleVec(transform(Ppred, H),1 / (dot(H, transform(Ppred, H)) + R))
+	X = addVec(pred, scaleVec(KM, (x - dot(H, pred))))
+	P_X = sub(Ppred, scaleMat(Ppred, dot(KM, H)))
 
     -- Y
     pred = transform(A, Y)
     Ppred = add(multiply(multiply(A, P_Y), transpose(A)), Q)
-    KM = scaleVec(transform(Ppred, H),1 / (dot(H,transform(Ppred, H)) + R))
-	Y = addVec(pred, scaleVec(KM, (y - dot(H,pred))))
-	P_Y = sub(Ppred, scaleMat(Ppred, dot(KM,H)))
+    KM = scaleVec(transform(Ppred, H),1 / (dot(H, transform(Ppred, H)) + R))
+	Y = addVec(pred, scaleVec(KM, (y - dot(H, pred))))
+	P_Y = sub(Ppred, scaleMat(Ppred, dot(KM, H)))
 
     -- Z
     pred = transform(A, Z)
     Ppred = add(multiply(multiply(A, P_Z), transpose(A)), Q)
-    KM = scaleVec(transform(Ppred, H),1 / (dot(H,transform(Ppred, H)) + R))
-	Z = addVec(pred, scaleVec(KM, (z - dot(H,pred))))
-	P_Z = sub(Ppred, scaleMat(Ppred, dot(KM,H)))
+    KM = scaleVec(transform(Ppred, H),1 / (dot(H, transform(Ppred, H)) + R))
+	Z = addVec(pred, scaleVec(KM, (z - dot(H, pred))))
+	P_Z = sub(Ppred, scaleMat(Ppred, dot(KM, H)))
 
     Ground_Velocity = math.sqrt((X[2] ^ 2) + (Z[2] ^ 2))
 end
