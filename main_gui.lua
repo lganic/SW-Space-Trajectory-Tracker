@@ -95,7 +95,7 @@ Margin = .2
 
 Focus_Moon = false
 Focus_Target = false
-Focus_Earth = true
+Focus_Earth = false
 
 Touch_X = 0
 Touch_Y = 0
@@ -540,6 +540,22 @@ function onDraw()
     LifeBoatAPI.LBColorSpace.lbcolorspace_setColorGammaCorrected(227, 208, 141, 255)
     qDrawMap(-24000, -37000, 29000, 14000, min_x, max_x, min_z, max_z, width_d2, reduced_height)
 
+    -- Draw the upper atmosphere warp zone
+    LifeBoatAPI.LBColorSpace.lbcolorspace_setColorGammaCorrected(200, 0, 200, 255)
+
+    start_x = screen_remap(-.4 * K, min_x, max_x, width_d2) + width_d2
+    start_y = screen_remap(.4 * K, max_z, min_z, reduced_height)
+    end_x = screen_remap(.4 * K, min_x, max_x, width_d2) + width_d2
+    end_y = screen_remap(-.4 * K, max_z, min_z, reduced_height)
+
+    screen.drawLine(start_x, start_y, end_x, start_y)
+    screen.drawLine(end_x, start_y, end_x, end_y)
+    screen.drawLine(end_x, end_y, start_x, end_y)
+    screen.drawLine(start_x, end_y, start_x, start_y)
+
+    -- Draw the upper atmosphere warp zone
+
+
     for i = 2, #path do
         local p1 = path[i - 1]
         local p2 = path[i]
@@ -658,6 +674,13 @@ function onDraw()
         LifeBoatAPI.LBColorSpace.lbcolorspace_setColorGammaCorrected(200, 0, 200, 255)
         screen.drawLine(0, line_pos, line_x_pos, line_pos)
     end
+
+    -- Draw the upper atmosphere warp zone
+    start_x = screen_remap(-.4 * K, min_x, max_x, width_d2)
+    end_x = screen_remap(.4 * K, min_x, max_x, width_d2)
+    line_height = screen_remap(.4 * K, max_y, min_y, reduced_height)
+
+    screen.drawLine(start_x, line_height, end_x, line_height)
 
     -- Render the path
 
