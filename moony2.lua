@@ -648,12 +648,6 @@ function onDraw()
     LifeBoatAPI.LBColorSpace.lbcolorspace_setColorGammaCorrected(0, 0, 0, 255)
 
     screen.drawText(2, focus_boxpos + 4, "Foc:")
-
-
-    -- Debug text
-    screen.setColor(255,255,255)
-    screen.drawText(10,10, Ground_Velocity)
-
 end
 
 
