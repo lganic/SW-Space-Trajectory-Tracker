@@ -37,7 +37,7 @@ do
         PX0 = 2000
         PZ0 = -5000
 
-        local VX = 7
+        local VX = 70
         local VZ = 5
 
         -- simulator:setInputNumber(1, 0)
@@ -271,11 +271,11 @@ function pointInWarpZone(x, y, z)
     if x < 1.4 * K then
 
         if y < .4 * K then
-            return pointInSquare(x, z, 1.28 * K)
+            return not pointInSquare(x, z, 1.28 * K)
         end
 
         if y < 1.28 * K then
-            return pointInSquare(x, Z, .4 * K)
+            return not pointInSquare(x, Z, .4 * K)
         end
     else
         -- Once I figure out if there are moon side warp zones, they will go here.
