@@ -263,8 +263,9 @@ function onTick()
         x = 2 * K - x
         y = 570159.265359 - y
     elseif y > 1.28 * K then
-        x = K - ((K - x) * math.cos(y / K - 1.28))
+        xn = K - ((K - x) * math.cos(y / K - 1.28))
         y = 1.28 * K + ((K - x) * math.sin(y / K - 1.28))
+        x=xn
     end
 
     -- Apply Kalman Filters
