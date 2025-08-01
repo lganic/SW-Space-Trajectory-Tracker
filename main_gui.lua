@@ -588,7 +588,7 @@ function onDraw()
         local cx = math.floor(screen_remap(last_point.x, min_x, max_x, width_d2) + width_d2)
         local cy = math.floor(screen_remap(last_point.z, max_z, min_z, reduced_height))
         screen.drawLine(cx - 1, cy + 1, cx + 3, cy - 3)
-        screen.drawLine(cx - 1, cy - 3, cx + 3, cy + 1)
+        screen.drawLine(cx - 1, cy - 2, cx + 3, cy + 2)
     end
 
     -- Draw ship
@@ -716,7 +716,7 @@ function onDraw()
         local cx = math.floor(screen_remap(last_point.x, min_x, max_x, width_d2))
         local cy = math.floor(screen_remap(last_point.y, max_y, min_y, reduced_height))
         screen.drawLine(cx - 1, cy + 1, cx + 3, cy - 3)
-        screen.drawLine(cx - 1, cy - 3, cx + 3, cy + 1)
+        screen.drawLine(cx - 1, cy - 2, cx + 3, cy + 2)
     end
 
     -- Draw the ship position
