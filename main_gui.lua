@@ -37,7 +37,7 @@ do
         PX0 = 2000
         PZ0 = -5000
 
-        local VX = 70
+        local VX = 210
         local VZ = 5
 
         -- simulator:setInputNumber(1, 0)
@@ -108,6 +108,8 @@ LOGO_FRAME_TIME = 60
 Logo_Frame_Count = 0
 
 CONTROLS_HEIGHT = 15
+
+Flash_Timer = 0
 
 function adjust_bounding(current, target)
     return (target - current) * RENDER_MARGINS_LERP + current
@@ -382,6 +384,8 @@ function onDraw()
     
     table.insert(path, { x = x_pos, y = y_pos, z = z_pos})
 
+    local reached_warp = false
+
     while not satisfied do
         -- RK4 Integration
         k1v = accel(Ground_Velocity, y_pos)
@@ -439,6 +443,7 @@ function onDraw()
         end
 
         if pointInWarpZone(x_pos, y_pos, z_pos) then
+            reached_warp = true
             satisfied = true
         end
 
@@ -553,11 +558,17 @@ function onDraw()
         screen.drawLine(x1, y1, x2, y2)
     end
 
-        -- If last point is an impact point, then draw an X there. 
+    -- If last point is an impact point, or a warp point, then draw an X there. 
 
     last_point = path[#path]
-    if last_point.y == 0 then
-        LifeBoatAPI.LBColorSpace.lbcolorspace_setColorGammaCorrected(255, 0, 0, 255)
+    if last_point.y == 0 or reached_warp then
+
+        LifeBoatAPI.LBColorSpace.lbcolorspace_setColorGammaCorrected(200, 0, 200, 255) -- Warp X color
+
+        if last_point.y == 0 then
+            LifeBoatAPI.LBColorSpace.lbcolorspace_setColorGammaCorrected(255, 0, 0, 255) -- Impact X color
+        end
+
         local cx = math.floor(screen_remap(last_point.x, min_x, max_x, width_d2) + width_d2)
         local cy = math.floor(screen_remap(last_point.z, max_z, min_z, reduced_height))
         screen.drawLine(cx - 1, cy + 1, cx + 3, cy - 3)
@@ -668,11 +679,17 @@ function onDraw()
         screen.drawLine(x1, y1, x2, y2)
     end
 
-    -- If last point is an impact point, then draw an X there. 
+    -- If last point is an impact point, or a warp point, then draw an X there. 
 
     last_point = path[#path]
-    if last_point.y == 0 then
-        LifeBoatAPI.LBColorSpace.lbcolorspace_setColorGammaCorrected(255, 0, 0, 255)
+    if last_point.y == 0 or reached_warp then
+
+        LifeBoatAPI.LBColorSpace.lbcolorspace_setColorGammaCorrected(200, 0, 200, 255) -- Warp X color
+
+        if last_point.y == 0 then
+            LifeBoatAPI.LBColorSpace.lbcolorspace_setColorGammaCorrected(255, 0, 0, 255) -- Impact X color
+        end
+
         local cx = math.floor(screen_remap(last_point.x, min_x, max_x, width_d2))
         local cy = math.floor(screen_remap(last_point.y, max_y, min_y, reduced_height))
         screen.drawLine(cx - 1, cy + 1, cx + 3, cy - 3)
@@ -706,6 +723,17 @@ function onDraw()
     LifeBoatAPI.LBColorSpace.lbcolorspace_setColorGammaCorrected(0, 0, 0, 255)
 
     screen.drawText(2, focus_boxpos + 4, "Foc:")
+
+    if reached_warp then
+        -- Display some flashing "warp" text.
+
+        Flash_Timer = Flash_Timer + 1
+
+        LifeBoatAPI.LBColorSpace.lbcolorspace_setColorGammaCorrected(200, 0, 200, 255)
+        if math.floor((Flash_Timer % 90) / 60) < 1 then
+            screen.drawText(2,2,"WARP")
+        end
+    end
 end
 
 
