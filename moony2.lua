@@ -25,7 +25,7 @@ do
     ---@param ticks     number Number of ticks since simulator started
     function onLBSimulatorTick(simulator, ticks)
 
-        ticks = math.max(0, ticks - 1000)
+        ticks = math.max(0, ticks - 100)
 
         local screenConnection = simulator:getTouchScreen(1)
         simulator:setInputBool(1, screenConnection.isTouched)
@@ -74,7 +74,7 @@ Y = {0,0,0}
 Z = {0,0,0}
 
 K = 100000
-R = 0.000001
+RK = 0.000001
 
 Ground_Velocity = 0
 
@@ -272,21 +272,21 @@ function onTick()
     -- X
     pred = transform(A, X)
     Ppred = add(multiply(multiply(A, P_X), transpose(A)), Q)
-    KM = scaleVec(transform(Ppred, H),1 / (dot(H, transform(Ppred, H)) + R))
+    KM = scaleVec(transform(Ppred, H),1 / (dot(H, transform(Ppred, H)) + RK))
 	X = addVec(pred, scaleVec(KM, (x - dot(H, pred))))
 	P_X = sub(Ppred, scaleMat(Ppred, dot(KM, H)))
 
     -- Y
     pred = transform(A, Y)
     Ppred = add(multiply(multiply(A, P_Y), transpose(A)), Q)
-    KM = scaleVec(transform(Ppred, H),1 / (dot(H, transform(Ppred, H)) + R))
+    KM = scaleVec(transform(Ppred, H),1 / (dot(H, transform(Ppred, H)) + RK))
 	Y = addVec(pred, scaleVec(KM, (y - dot(H, pred))))
 	P_Y = sub(Ppred, scaleMat(Ppred, dot(KM, H)))
 
     -- Z
     pred = transform(A, Z)
     Ppred = add(multiply(multiply(A, P_Z), transpose(A)), Q)
-    KM = scaleVec(transform(Ppred, H),1 / (dot(H, transform(Ppred, H)) + R))
+    KM = scaleVec(transform(Ppred, H),1 / (dot(H, transform(Ppred, H)) + RK))
 	Z = addVec(pred, scaleVec(KM, (z - dot(H, pred))))
 	P_Z = sub(Ppred, scaleMat(Ppred, dot(KM, H)))
 
@@ -329,7 +329,7 @@ function onDraw()
 
     -- Do forward path estimation
     local satisfied = false
-    local delta_t = 1
+    local delta_t = .1
     local x_pos = X[1]
     local y_pos = Y[1]
     local z_pos = Z[1]
@@ -390,6 +390,8 @@ function onDraw()
         if y_pos <= 0 or y_pos > math.max(5*K, P_Y[1] + K) or t > 600 then
             satisfied = true
         end
+
+        delta_t = delta_t + .1 -- Slightly increase delta t each frame, to increase performance in later stage predictions, where precision is less required.
     end
 
     -- min max processing, for focus viewing
