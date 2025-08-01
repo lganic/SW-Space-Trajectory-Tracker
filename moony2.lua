@@ -516,10 +516,10 @@ function onDraw()
     last_point = path[#path]
     if last_point.y == 0 then
         LifeBoatAPI.LBColorSpace.lbcolorspace_setColorGammaCorrected(255, 0, 0, 255)
-        local cx = screen_remap(last_point.x, min_x, max_x, width_d2) + width_d2
-        local cy = screen_remap(last_point.z, max_z, min_z, reduced_height)
-        screen.drawLine(cx - 2, cy - 2, cx + 2, cy + 2)
-        screen.drawLine(cx + 2, cy - 2, cx - 2, cy + 2)
+        local cx = math.floor(screen_remap(last_point.x, min_x, max_x, width_d2) + width_d2)
+        local cy = math.floor(screen_remap(last_point.z, max_z, min_z, reduced_height))
+        screen.drawLine(cx - 1, cy + 1, cx + 3, cy - 3)
+        screen.drawLine(cx - 1, cy - 3, cx + 3, cy + 1)
     end
 
     -- Draw ship
@@ -635,10 +635,10 @@ function onDraw()
     last_point = path[#path]
     if last_point.y == 0 then
         LifeBoatAPI.LBColorSpace.lbcolorspace_setColorGammaCorrected(255, 0, 0, 255)
-        local cx = screen_remap(last_point.x, min_x, max_x, width_d2)
-        local cy = screen_remap(last_point.y, max_y, min_y, reduced_height)
-        screen.drawLine(cx - 2, cy - 2, cx + 2, cy + 2)
-        screen.drawLine(cx + 2, cy - 2, cx - 2, cy + 2)
+        local cx = math.floor(screen_remap(last_point.x, min_x, max_x, width_d2))
+        local cy = math.floor(screen_remap(last_point.y, max_y, min_y, reduced_height))
+        screen.drawLine(cx - 1, cy + 1, cx + 3, cy - 3)
+        screen.drawLine(cx - 1, cy - 3, cx + 3, cy + 1)
     end
 
     -- Draw the ship position
