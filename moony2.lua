@@ -367,13 +367,6 @@ function onDraw()
 
         t = t + delta_t
 
-        min_x = math.min(min_x, x_pos)
-        max_x = math.max(max_x, x_pos)
-        min_y = math.min(min_y, y_pos)
-        max_y = math.max(max_y, y_pos)
-        min_z = math.min(min_z, z_pos)
-        max_z = math.max(max_z, z_pos)
-
         if n_y_pos < 0 then
 
             -- Create estimate of actual impact point based on projected position, by assuming a linear trajectory between pos, and new position
@@ -388,6 +381,13 @@ function onDraw()
         x_pos = n_x_pos
         y_pos = n_y_pos
         z_pos = n_z_pos
+
+        min_x = math.min(min_x, x_pos)
+        max_x = math.max(max_x, x_pos)
+        min_y = math.min(min_y, y_pos)
+        max_y = math.max(max_y, y_pos)
+        min_z = math.min(min_z, z_pos)
+        max_z = math.max(max_z, z_pos)
 
         table.insert(path, { x = x_pos, y = y_pos, z = z_pos})
 
