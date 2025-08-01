@@ -25,12 +25,17 @@ do
     ---@param ticks     number Number of ticks since simulator started
     function onLBSimulatorTick(simulator, ticks)
 
+        ticks = math.max(0, ticks - 1000)
+
         local screenConnection = simulator:getTouchScreen(1)
         simulator:setInputBool(1, screenConnection.isTouched)
 
         local A = 2
         local V0 = 0
-        local P0 = 0
+        local P0 = 100
+
+        PX0 = 2000
+        PZ0 = -5000
 
         local VX = 7
         local VZ = 5
@@ -41,9 +46,9 @@ do
 
         local time = ticks / 60
 
-        simulator:setInputNumber(1, VX * time)
+        simulator:setInputNumber(1, PX0 + VX * time)
         simulator:setInputNumber(2, (A * time * time / 2) + V0 * time + P0)
-        simulator:setInputNumber(3, VZ * time)
+        simulator:setInputNumber(3, PZ0 + VZ * time)
 
         simulator:setInputNumber(7, screenConnection.touchX)
         simulator:setInputNumber(8, screenConnection.touchY)
