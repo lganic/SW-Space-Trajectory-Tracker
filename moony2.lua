@@ -514,8 +514,8 @@ function onDraw()
     local ship_x = screen_remap(X[1], min_x, max_x, width_d2) + width_d2
     local ship_y = screen_remap(Z[1], max_z, min_z, reduced_height)
 
-    LifeBoatAPI.LBColorSpace.lbcolorspace_setColorGammaCorrected(0, 200, 0, 255)
-    screen.drawCircleF(ship_x, ship_y, 2)
+    LifeBoatAPI.LBColorSpace.lbcolorspace_setColorGammaCorrected(200, 200, 200, 255)
+    screen.drawCircleF(ship_x, ship_y, 1)
 
     -- Prep for render 1
 
@@ -634,8 +634,8 @@ function onDraw()
     local ship_x = screen_remap(X[1], min_x, max_x, width_d2)
     local ship_y = screen_remap(Y[1], max_y, min_y, reduced_height)
 
-    LifeBoatAPI.LBColorSpace.lbcolorspace_setColorGammaCorrected(0, 200, 0, 255)
-    screen.drawCircleF(ship_x, ship_y, 2)
+    LifeBoatAPI.LBColorSpace.lbcolorspace_setColorGammaCorrected(200, 200, 200, 255)
+    screen.drawCircleF(ship_x, ship_y, 1)
 
     -- Draw Controls
 
