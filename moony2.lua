@@ -30,7 +30,7 @@ do
         local screenConnection = simulator:getTouchScreen(1)
         simulator:setInputBool(1, screenConnection.isTouched)
 
-        local A = 2
+        local A = 5
         local V0 = 0
         local P0 = 100
 
@@ -475,7 +475,7 @@ function onDraw()
 
     -- Draw earth
 
-    LifeBoatAPI.LBColorSpace.lbcolorspace_setColorGammaCorrected(0, 255, 255, 255)
+    LifeBoatAPI.LBColorSpace.lbcolorspace_setColorGammaCorrected(40, 100, 110, 255)
 
     qDrawMap(-1.28 * K, -1.28 * K, 2.56 * K, 2.56 * K, min_x, max_x, min_z, max_z, width_d2, reduced_height)
 
@@ -500,7 +500,7 @@ function onDraw()
         LifeBoatAPI.LBColorSpace.lbcolorspace_setColorGammaCorrected(0, 200, 0, 255)
 
         if p2.y > 3 * K then
-            LifeBoatAPI.LBColorSpace.lbcolorspace_setColorGammaCorrected(200, 0, 200, 255)
+            LifeBoatAPI.LBColorSpace.lbcolorspace_setColorGammaCorrected(255, 0, 0, 255)
         end
         
         local x1 = screen_remap(p1.x, min_x, max_x, width_d2) + width_d2
@@ -572,8 +572,6 @@ function onDraw()
     min_y = min_y - addition
     max_y = max_y + addition
 
-    -- debug.log(min_x, max_x, min_y, max_y)
-
     -- Draw earth
 
     LifeBoatAPI.LBColorSpace.lbcolorspace_setColorGammaCorrected(0, 255, 255, 255)
@@ -604,14 +602,12 @@ function onDraw()
     line_x_pos = screen_remap(-.4*K, min_x, max_x, width_d2)
 
     if line_x_pos > 0 then
-        LifeBoatAPI.LBColorSpace.lbcolorspace_setColorGammaCorrected(255, 0, 0, 255)
+        LifeBoatAPI.LBColorSpace.lbcolorspace_setColorGammaCorrected(200, 0, 200, 255)
         screen.drawLine(0, line_pos, line_x_pos, line_pos)
     end
 
     -- Render the path
 
-    LifeBoatAPI.LBColorSpace.lbcolorspace_setColorGammaCorrected(255, 0, 255, 255)
-    
     for i = 2, #path do
         local p1 = path[i - 1]
         local p2 = path[i]
@@ -619,7 +615,7 @@ function onDraw()
         LifeBoatAPI.LBColorSpace.lbcolorspace_setColorGammaCorrected(0, 200, 0, 255)
 
         if p2.y > 3 * K then
-            LifeBoatAPI.LBColorSpace.lbcolorspace_setColorGammaCorrected(200, 0, 200, 255)
+            LifeBoatAPI.LBColorSpace.lbcolorspace_setColorGammaCorrected(255, 0, 0, 255)
         end
         
         local x1 = screen_remap(p1.x, min_x, max_x, width_d2)
