@@ -392,11 +392,11 @@ function onDraw()
 
         table.insert(path, { x = x_pos, y = y_pos, z = z_pos})
 
-        -- If altitude is less than zero, or greater than 10 minutes in path time. Or if altitude is greater than 500k (altitude probably runaway)
-        -- There is a special case here, that if you are above 500k, the projected path can go above its 500k cap, up to 100k + your current alt
+        -- If altitude is less than zero, or greater than 10 minutes in path time. Or if altitude is greater than 350k (altitude probably runaway)
+        -- There is a special case here, that if you are above 350k, the projected path can go above its 350k cap, up to 100k + your current alt
         -- this is to ensure that you always have a decent idea of your trajectory. 
 
-        if y_pos <= 0 or y_pos > math.max(5*K, P_Y[1] + K) or t > 600 then
+        if y_pos <= 0 or y_pos > math.max(3.5*K, P_Y[1] + K) or t > 600 then
             satisfied = true
         end
 
