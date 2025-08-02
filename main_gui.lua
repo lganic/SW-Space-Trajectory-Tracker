@@ -112,6 +112,8 @@ CONTROLS_HEIGHT = 11
 
 Flash_Timer = 0
 
+MIN_MAP_SCALE = 100
+
 function adjust_bounding(current, target)
     return (target - current) * RENDER_MARGINS_LERP + current
 end
@@ -481,6 +483,29 @@ function onDraw()
 
     -- Adjustments to rendering, for smooth vbox transitions. 
     if min_x ~= math.huge then
+
+        -- Ensure that a minimum map scale is being maintained
+        range_x = max_x - min_x
+        if range_x < MIN_MAP_SCALE then
+            midpoint = (min_x + max_x) / 2
+            min_x = midpoint - MIN_MAP_SCALE / 2
+            max_x = midpoint + MIN_MAP_SCALE / 2
+        end
+
+        range_y = max_y - min_y
+        if range_y < MIN_MAP_SCALE then
+            midpoint = (min_y + max_y) / 2
+            min_y = midpoint - MIN_MAP_SCALE / 2
+            max_y = midpoint + MIN_MAP_SCALE / 2
+        end
+
+        range_z = max_z - min_z
+        if range_z < MIN_MAP_SCALE then
+            midpoint = (min_z + max_z) / 2
+            min_z = midpoint - MIN_MAP_SCALE / 2
+            max_z = midpoint + MIN_MAP_SCALE / 2
+        end
+
         Render1_Min_X = adjust_bounding(Render1_Min_X, min_x)
         Render1_Max_X = adjust_bounding(Render1_Max_X, max_x)
         Render1_Min_Y = adjust_bounding(Render1_Min_Y, min_y)
