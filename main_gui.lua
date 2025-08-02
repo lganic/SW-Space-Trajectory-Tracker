@@ -96,6 +96,7 @@ Margin = .2
 Focus_Moon = false
 Focus_Target = false
 Focus_Earth = false
+Focus_Path = true
 
 Touch_X = 0
 Touch_Y = 0
@@ -107,7 +108,7 @@ RENDER_MARGINS_LERP = .1
 LOGO_FRAME_TIME = 60
 Logo_Frame_Count = 0
 
-CONTROLS_HEIGHT = 15
+CONTROLS_HEIGHT = 11
 
 Flash_Timer = 0
 
@@ -425,12 +426,14 @@ function onDraw()
         y_pos = n_y_pos
         z_pos = n_z_pos
 
-        min_x = math.min(min_x, x_pos)
-        max_x = math.max(max_x, x_pos)
-        min_y = math.min(min_y, y_pos)
-        max_y = math.max(max_y, y_pos)
-        min_z = math.min(min_z, z_pos)
-        max_z = math.max(max_z, z_pos)
+        if Focus_Path then
+            min_x = math.min(min_x, x_pos)
+            max_x = math.max(max_x, x_pos)
+            min_y = math.min(min_y, y_pos)
+            max_y = math.max(max_y, y_pos)
+            min_z = math.min(min_z, z_pos)
+            max_z = math.max(max_z, z_pos)
+        end
 
         table.insert(path, { x = x_pos, y = y_pos, z = z_pos})
 
@@ -453,12 +456,12 @@ function onDraw()
     -- min max processing, for focus viewing
 
     if Focus_Earth then
-        min_x = math.min(min_x, -1.28 * K)
-        max_x = math.max(max_x, 1.28 * K)
+        min_x = math.min(min_x, -.4 * K)
+        max_x = math.max(max_x, .4 * K)
         min_y = math.min(min_y, 0)
         max_y = math.max(max_y, 1.28 * K)
-        min_z = math.min(min_x, -1.28 * K)
-        max_z = math.max(max_x, 1.28 * K)
+        min_z = math.min(min_x, -.4 * K)
+        max_z = math.max(max_x, .4 * K)
     end
 
     if Focus_Moon then
@@ -479,14 +482,16 @@ function onDraw()
     -- I am going to do render 2 first, that way I might be able to use screen.drawMap down the line.
 
     -- Adjustments to rendering, for smooth vbox transitions. 
-    Render1_Min_X = adjust_bounding(Render1_Min_X, min_x)
-    Render1_Max_X = adjust_bounding(Render1_Max_X, max_x)
-    Render1_Min_Y = adjust_bounding(Render1_Min_Y, min_y)
-    Render1_Max_Y = adjust_bounding(Render1_Max_Y, max_y)
-    Render2_Min_X = adjust_bounding(Render2_Min_X, min_x)
-    Render2_Max_X = adjust_bounding(Render2_Max_X, max_x)
-    Render2_Min_Z = adjust_bounding(Render2_Min_Z, min_z)
-    Render2_Max_Z = adjust_bounding(Render2_Max_Z, max_z)
+    if min_x ~= math.huge then
+        Render1_Min_X = adjust_bounding(Render1_Min_X, min_x)
+        Render1_Max_X = adjust_bounding(Render1_Max_X, max_x)
+        Render1_Min_Y = adjust_bounding(Render1_Min_Y, min_y)
+        Render1_Max_Y = adjust_bounding(Render1_Max_Y, max_y)
+        Render2_Min_X = adjust_bounding(Render2_Min_X, min_x)
+        Render2_Max_X = adjust_bounding(Render2_Max_X, max_x)
+        Render2_Min_Z = adjust_bounding(Render2_Min_Z, min_z)
+        Render2_Max_Z = adjust_bounding(Render2_Max_Z, max_z)
+    end
 
     -- Do render 2
 
@@ -735,17 +740,10 @@ function onDraw()
 
     focus_boxpos = height - CONTROLS_HEIGHT + 1
 
-    Focus_Moon = simple_button(23, focus_boxpos + 2, "Moon", Focus_Moon)
-    Focus_Target = simple_button(47, focus_boxpos + 2, "Tgt", Focus_Target)
-    Focus_Earth = simple_button(66, focus_boxpos + 2, "Earth", Focus_Earth)
-
-    LifeBoatAPI.LBColorSpace.lbcolorspace_setColorGammaCorrected(120, 120, 120, 255)
-
-    screen.drawRect(21, focus_boxpos, 74, 12)
-
-    LifeBoatAPI.LBColorSpace.lbcolorspace_setColorGammaCorrected(0, 0, 0, 255)
-
-    screen.drawText(2, focus_boxpos + 4, "Foc:")
+    Focus_Path = simple_button(1, focus_boxpos, "Pth", Focus_Path)
+    Focus_Moon = simple_button(20, focus_boxpos, "Moon", Focus_Moon)
+    Focus_Target = simple_button(44, focus_boxpos, "Tgt", Focus_Target)
+    Focus_Earth = simple_button(63, focus_boxpos, "Earth", Focus_Earth)
 
     if reached_warp then
         -- Display some flashing "warp" text.
