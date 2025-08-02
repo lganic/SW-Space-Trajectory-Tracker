@@ -371,7 +371,7 @@ function onDraw()
 
     -- Do forward path estimation
     local satisfied = false
-    local delta_t = .1
+    local delta_t = 5
     local x_pos = X[1]
     local y_pos = Y[1]
     local z_pos = Z[1]
@@ -437,11 +437,11 @@ function onDraw()
 
         table.insert(path, { x = x_pos, y = y_pos, z = z_pos})
 
-        -- If altitude is less than zero, or greater than 10 minutes in path time. Or if altitude is greater than 350k (altitude probably runaway)
+        -- If altitude is less than zero, or greater than 30 minutes in path time. Or if altitude is greater than 350k (altitude probably runaway)
         -- There is a special case here, that if you are above 350k, the projected path can go above its 350k cap, up to 100k + your current alt
         -- this is to ensure that you always have a decent idea of your trajectory. 
 
-        if y_pos <= 0 or y_pos > math.max(3.5*K, P_Y[1] + K) or t > 600 then
+        if y_pos <= 0 or y_pos > math.max(3.5*K, P_Y[1] + K) or t > 1800 then
             satisfied = true
         end
 
@@ -449,8 +449,6 @@ function onDraw()
             reached_warp = true
             satisfied = true
         end
-
-        delta_t = delta_t + .1 -- Slightly increase delta t each frame, to increase performance in later stage predictions, where precision is less required.
     end
 
     -- min max processing, for focus viewing
