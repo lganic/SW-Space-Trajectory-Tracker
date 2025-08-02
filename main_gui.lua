@@ -687,6 +687,15 @@ function onDraw()
 
     screen.drawLine(start_x, line_height, end_x, line_height)
 
+    -- Draw trans-lunar warp zone
+    for i = 0,math.pi,.1 do
+        x1 = screen_remap(K + .6 * K * math.cos(i), min_x, max_x, width_d2)
+        y1 = screen_remap(1.28 * K + .6 * K * math.sin(i), max_y, min_y, reduced_height)
+        x2 = screen_remap(K + .6 * K * math.cos(i+.1), min_x, max_x, width_d2)
+        y2 = screen_remap(1.28 * K + .6 * K * math.sin(i+.1), max_y, min_y, reduced_height)
+        screen.drawLine(x1,y1,x2,y2)
+    end
+
     -- Render the path
 
     for i = 2, #path do
