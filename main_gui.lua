@@ -46,9 +46,9 @@ do
 
         local time = ticks / 60
 
-        simulator:setInputNumber(1, PX0 + VX * time)
-        simulator:setInputNumber(2, (A * time * time / 2) + V0 * time + P0)
-        simulator:setInputNumber(3, PZ0 + VZ * time)
+        -- simulator:setInputNumber(1, PX0 + VX * time)
+        -- simulator:setInputNumber(2, (A * time * time / 2) + V0 * time + P0)
+        -- simulator:setInputNumber(3, PZ0 + VZ * time)
 
         simulator:setInputNumber(7, screenConnection.touchX)
         simulator:setInputNumber(8, screenConnection.touchY)
@@ -548,25 +548,43 @@ function onDraw()
     min_z = min_z - addition
     max_z = max_z + addition
 
-    -- Draw earth
-
-    LifeBoatAPI.LBColorSpace.lbcolorspace_setColorGammaCorrected(40, 100, 110, 255)
-
-    qDrawMap(-1.28 * K, -1.28 * K, 2.56 * K, 2.56 * K, min_x, max_x, min_z, max_z, width_d2, reduced_height)
-
     -- Draw moon
 
     LifeBoatAPI.LBColorSpace.lbcolorspace_setColorGammaCorrected(255, 255, 255, 255)
 
     qDrawMap(1.845 * K, -15500, 31000, 31000, min_x, max_x, min_z, max_z, width_d2, reduced_height)
 
-    -- Draw Land
-    LifeBoatAPI.LBColorSpace.lbcolorspace_setColorGammaCorrected(164, 184, 117, 255)
-    qDrawMap(-8000, -12000, 20000, 10000, min_x, max_x, min_z, max_z, width_d2, reduced_height)
 
-    -- Draw Arid Island
-    LifeBoatAPI.LBColorSpace.lbcolorspace_setColorGammaCorrected(227, 208, 141, 255)
-    qDrawMap(-24000, -37000, 29000, 14000, min_x, max_x, min_z, max_z, width_d2, reduced_height)
+    map_location_x = (max_x + min_x) / 2
+    map_location_z = (max_z + min_z) / 2
+    zoom = (max_x - min_x) * width / (1000 * width_d2)
+
+    if zoom > 50 then
+
+        -- Backup earth drawing at high ranges
+
+        -- Draw earth
+
+        LifeBoatAPI.LBColorSpace.lbcolorspace_setColorGammaCorrected(40, 100, 110, 255)
+
+        qDrawMap(-1.28 * K, -1.28 * K, 2.56 * K, 2.56 * K, min_x, max_x, min_z, max_z, width_d2, reduced_height)
+
+        -- Draw Land
+        LifeBoatAPI.LBColorSpace.lbcolorspace_setColorGammaCorrected(164, 184, 117, 255)
+        qDrawMap(-8000, -12000, 20000, 10000, min_x, max_x, min_z, max_z, width_d2, reduced_height)
+
+        -- Draw Arid Island
+        LifeBoatAPI.LBColorSpace.lbcolorspace_setColorGammaCorrected(227, 208, 141, 255)
+        qDrawMap(-24000, -37000, 29000, 14000, min_x, max_x, min_z, max_z, width_d2, reduced_height)
+
+    else
+        -- Offset the X location to the right hand side of the screen
+        map_location_x = map_location_x - .25 * zoom * 1000
+        map_location_z = map_location_z - (CONTROLS_HEIGHT * zoom * 1000) / width -- something is wrong here, but only slightly wrong
+
+        screen.drawMap(map_location_x, map_location_z, zoom)
+    end
+
 
     -- Draw the upper atmosphere warp zone
     LifeBoatAPI.LBColorSpace.lbcolorspace_setColorGammaCorrected(200, 0, 200, 255)
@@ -631,7 +649,7 @@ function onDraw()
     -- First, draw a rect over the left side of the screen, to ensure that the we have a nice drawing space to work with. 
 
     screen.setColor(0,0,0)
-    screen.drawRect(0, 0, width_d2, reduced_height)
+    screen.drawRectF(0, 0, width_d2, reduced_height)
 
     -- Draw seperation line between render 1 and render 2
     LifeBoatAPI.LBColorSpace.lbcolorspace_setColorGammaCorrected(150, 150, 150, 255)
