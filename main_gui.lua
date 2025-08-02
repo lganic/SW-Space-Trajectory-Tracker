@@ -675,8 +675,8 @@ function onDraw()
     line_pos = screen_remap(1.28*K, max_y, min_y, reduced_height)
     line_x_pos = screen_remap(-.4*K, min_x, max_x, width_d2)
 
+    LifeBoatAPI.LBColorSpace.lbcolorspace_setColorGammaCorrected(200, 0, 200, 255)
     if line_x_pos > 0 then
-        LifeBoatAPI.LBColorSpace.lbcolorspace_setColorGammaCorrected(200, 0, 200, 255)
         screen.drawLine(0, line_pos, line_x_pos, line_pos)
     end
 
