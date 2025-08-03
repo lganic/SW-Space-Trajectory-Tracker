@@ -253,13 +253,13 @@ function pointInCircle(circle_x, circle_y, point_x, point_y, radius)
     return (circle_x - point_x) ^ 2 + (circle_y - point_y) ^ 2 < radius ^ 2
 end
 
-function pointInSquare(point_x, point_y, length)
-    -- Check if a point is in a square with a certain side length. For compactness, the square is centered at 0,0
+function pointInSquare(square_x, square_y, point_x, point_y, length)
+    -- Check if a point is in a square with a certain side length.
 
     length = length / 2
 
-    in_x_range = (point_x < length) and (point_x > -length)
-    in_y_range = (point_y < length) and (point_y > -length)
+    in_x_range = ((point_x - square_x) < length) and ((point_x - square_x) > -length)
+    in_y_range = ((point_y - square_y) < length) and ((point_y - square_y) > -length)
 
     return in_x_range and in_y_range
 end
@@ -385,6 +385,7 @@ function onDraw()
     table.insert(path, { x = x_pos, y = y_pos, z = z_pos})
 
     local reached_warp = false
+    local reached_moon = false
 
     while not satisfied do
         -- RK4 Integration
@@ -410,7 +411,19 @@ function onDraw()
 
         t = t + delta_t
 
+        -- Check for moon collision
+
+        if pointInSquare(200000, 0, n_x_pos, n_z_pos, 31000) and n_y_pos < .8 * K then
+            local lerp_value = (.8 * K - y_pos) / (n_y_pos - y_pos)
+            n_x_pos = (n_x_pos - x_pos) * lerp_value + x_pos
+            n_z_pos = (n_z_pos - z_pos) * lerp_value + z_pos
+            
+            satisfied = true
+            reached_moon = true
+        end
+
         if n_y_pos < 0 then
+            -- Earth collision
 
             -- Create estimate of actual impact point based on projected position, by assuming a linear trajectory between pos, and new position
 
@@ -620,12 +633,16 @@ function onDraw()
     -- If last point is an impact point, or a warp point, then draw an X there. 
 
     last_point = path[#path]
-    if last_point.y == 0 or reached_warp then
+    if last_point.y == 0 or reached_warp or reached_moon then
 
         LifeBoatAPI.LBColorSpace.lbcolorspace_setColorGammaCorrected(200, 0, 200, 255) -- Warp X color
 
         if last_point.y == 0 then
             LifeBoatAPI.LBColorSpace.lbcolorspace_setColorGammaCorrected(255, 0, 0, 255) -- Impact X color
+        end
+
+        if reached_moon then
+            LifeBoatAPI.LBColorSpace.lbcolorspace_setColorGammaCorrected(0, 0, 200, 255) -- Moon X color
         end
 
         local cx = math.floor(screen_remap(last_point.x, min_x, max_x, width_d2) + width_d2)
@@ -757,12 +774,16 @@ function onDraw()
     -- If last point is an impact point, or a warp point, then draw an X there. 
 
     last_point = path[#path]
-    if last_point.y == 0 or reached_warp then
+    if last_point.y == 0 or reached_warp or reached_moon then
 
         LifeBoatAPI.LBColorSpace.lbcolorspace_setColorGammaCorrected(200, 0, 200, 255) -- Warp X color
 
         if last_point.y == 0 then
             LifeBoatAPI.LBColorSpace.lbcolorspace_setColorGammaCorrected(255, 0, 0, 255) -- Impact X color
+        end
+
+        if reached_moon then
+            LifeBoatAPI.LBColorSpace.lbcolorspace_setColorGammaCorrected(0, 0, 200, 255) -- Moon X color
         end
 
         local cx = math.floor(screen_remap(last_point.x, min_x, max_x, width_d2))
