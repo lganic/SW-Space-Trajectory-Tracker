@@ -78,9 +78,6 @@ RK = 0.000001
 
 Ground_Velocity = 0
 
-Wrap_Location_X = 0
-Wrap_Location_Z = -K
-
 Render1_Min_X = -1
 Render1_Max_X = 1
 Render1_Min_Y = -1
