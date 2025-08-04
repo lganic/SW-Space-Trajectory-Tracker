@@ -100,8 +100,6 @@ Touch_Y = 0
 Is_Touch = false
 Action_Taken = false
 
-RENDER_MARGINS_LERP = .1
-
 LOGO_FRAME_TIME = 60
 Logo_Frame_Count = 0
 
@@ -112,7 +110,7 @@ Flash_Timer = 0
 MIN_MAP_SCALE = 100
 
 function adjust_bounding(current, target)
-    return (target - current) * RENDER_MARGINS_LERP + current
+    return (target - current) * .1 + current
 end
 
 -- function accel(v, d)
