@@ -116,9 +116,7 @@ function adjust_bounding(current, target)
 end
 
 function accel(v, d)
-    G = 10
-    R = (100000 / 3) * (1 + math.sqrt(10))
-    return math.min(1, d / 40000) + (v / 100) - (G * R * R) / ((R + d) ^ 2)
+    return math.min(1, d / 40000) + (v / 100) - 192495059114.85 / ((138742.58867228 + d) ^ 2)
 end
 
 function screen_remap(location, min_range, max_range, screen_size)
