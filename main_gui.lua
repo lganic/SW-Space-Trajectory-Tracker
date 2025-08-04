@@ -565,15 +565,14 @@ function onDraw()
     qDrawMap(1.845 * K, -15500, 31000, 31000, min_x, max_x, min_z, max_z, width_d2, reduced_height)
 
 
+    -- Draw earth
+    -- Use screen.drawMap when able. Otherwise direct to a backup. 
     map_location_x = (max_x + min_x) / 2
     map_location_z = (max_z + min_z) / 2
     zoom = (max_x - min_x) * width / (1000 * width_d2)
 
     if zoom > 50 then
-
         -- Backup earth drawing at high ranges
-
-        -- Draw earth
 
         LifeBoatAPI.LBColorSpace.lbcolorspace_setColorGammaCorrected(40, 100, 110, 255)
 
