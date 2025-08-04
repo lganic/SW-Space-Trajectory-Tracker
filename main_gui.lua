@@ -413,7 +413,7 @@ function onDraw()
 
         -- Check for moon collision
 
-        if pointInSquare(200000, 0, n_x_pos, n_z_pos, 31000) and n_y_pos < .8 * K then
+        if pointInSquare(2 * K, 0, n_x_pos, n_z_pos, 31000) and n_y_pos < .8 * K then
             local lerp_value = (.8 * K - y_pos) / (n_y_pos - y_pos)
             n_x_pos = (n_x_pos - x_pos) * lerp_value + x_pos
             n_z_pos = (n_z_pos - z_pos) * lerp_value + z_pos
@@ -581,7 +581,7 @@ function onDraw()
 
         -- Draw Land
         LifeBoatAPI.LBColorSpace.lbcolorspace_setColorGammaCorrected(164, 184, 117, 255)
-        qDrawMap(-8000, -12000, 20000, 10000, min_x, max_x, min_z, max_z, width_d2, reduced_height)
+        qDrawMap(-8000, -12000, .2 * K, .1 * K, min_x, max_x, min_z, max_z, width_d2, reduced_height)
 
         -- Draw Arid Island
         LifeBoatAPI.LBColorSpace.lbcolorspace_setColorGammaCorrected(227, 208, 141, 255)
