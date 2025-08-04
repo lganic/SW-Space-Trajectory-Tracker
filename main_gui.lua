@@ -59,9 +59,6 @@ end
 
 --[====[ IN-GAME CODE ]====]
 
-
-require("LifeBoatAPI.Drawing.LBColorSpace")
-
 -- Kalman filters related matrices
 A = {1,1/60,1/7200,0,1,1/60,0,0,1}
 Q = {1/1679616000000,1/9331200000,1/77760000,1/9331200000,1/51840000,1/432000,1/77760000,1/432000,1/3600}
@@ -160,22 +157,22 @@ function simple_button(x, y, string, highlight)
 
     text_length = 5 * #string
 
-    LifeBoatAPI.LBColorSpace.lbcolorspace_setColorGammaCorrected(100, 100, 100, 255)
+    screen.setColor(13, 13, 13)
 
     screen.drawRectF(x, y, text_length + 3, 9)
 
-    LifeBoatAPI.LBColorSpace.lbcolorspace_setColorGammaCorrected(200, 200, 200, 255)
+    screen.setColor(117, 117, 117)
     if highlight then
-        LifeBoatAPI.LBColorSpace.lbcolorspace_setColorGammaCorrected(0, 200, 0, 255)
+        screen.setColor(0, 117, 0)
     end
 
     screen.drawRectF(x + 1, y + 1, text_length + 1, 7)
 
-    LifeBoatAPI.LBColorSpace.lbcolorspace_setColorGammaCorrected(0, 0, 0, 255)
+    screen.setColor(0, 0, 0)
 
     screen.drawText(x + 2, y + 2, string)
 
-    LifeBoatAPI.LBColorSpace.lbcolorspace_setColorGammaCorrected(150, 150, 150, 255)
+    screen.setColor(47, 47, 47)
 
     screen.drawRectF(x, y, 1, 1)
     screen.drawRectF(x+text_length+2, y, 1, 1)
@@ -346,7 +343,7 @@ function onDraw()
     -- Display Logo
     if Logo_Frame_Count < LOGO_FRAME_TIME then
         Logo_Frame_Count = Logo_Frame_Count + 1
-        LifeBoatAPI.LBColorSpace.lbcolorspace_setColorGammaCorrected(66, 85, 235, 255)
+        screen.setColor(3, 8, 196)
 
         drawQuads({
             {ax = 10,  ay = 10,  bx = 15,  by = 30,  cx = 20,  cy = 30,  dx = 15,  dy = 10},
@@ -561,7 +558,7 @@ function onDraw()
 
     -- Draw moon
 
-    LifeBoatAPI.LBColorSpace.lbcolorspace_setColorGammaCorrected(255, 255, 255, 255)
+    screen.setColor(255, 255, 255)
 
     qDrawMap(1.845 * K, -15500, 31000, 31000, min_x, max_x, min_z, max_z, width_d2, reduced_height)
 
@@ -575,16 +572,16 @@ function onDraw()
     if zoom > 50 then
         -- Backup earth drawing at high ranges
 
-        LifeBoatAPI.LBColorSpace.lbcolorspace_setColorGammaCorrected(40, 100, 110, 255)
+        screen.setColor(1, 13, 17)
 
         qDrawMap(-1.28 * K, -1.28 * K, 2.56 * K, 2.56 * K, min_x, max_x, min_z, max_z, width_d2, reduced_height)
 
         -- Draw Land
-        LifeBoatAPI.LBColorSpace.lbcolorspace_setColorGammaCorrected(164, 184, 117, 255)
+        screen.setColor(62, 90, 21)
         qDrawMap(-8000, -12000, .2 * K, .1 * K, min_x, max_x, min_z, max_z, width_d2, reduced_height)
 
         -- Draw Arid Island
-        LifeBoatAPI.LBColorSpace.lbcolorspace_setColorGammaCorrected(227, 208, 141, 255)
+        screen.setColor(176, 133, 38)
         qDrawMap(-24000, -37000, 29000, 14000, min_x, max_x, min_z, max_z, width_d2, reduced_height)
 
     else
@@ -597,7 +594,7 @@ function onDraw()
 
 
     -- Draw the upper atmosphere warp zone
-    LifeBoatAPI.LBColorSpace.lbcolorspace_setColorGammaCorrected(200, 0, 200, 255)
+    screen.setColor(117, 0, 117)
 
     start_x = screen_remap(-.4 * K, min_x, max_x, width_d2) + width_d2
     start_y = screen_remap(.4 * K, max_z, min_z, reduced_height)
@@ -616,10 +613,10 @@ function onDraw()
         local p1 = path[i - 1]
         local p2 = path[i]
 
-        LifeBoatAPI.LBColorSpace.lbcolorspace_setColorGammaCorrected(0, 200, 0, 255)
+        screen.setColor(0, 117, 0)
 
         if p2.y > 3 * K then
-            LifeBoatAPI.LBColorSpace.lbcolorspace_setColorGammaCorrected(255, 0, 0, 255)
+            screen.setColor(255, 0, 0)
         end
         
         local x1 = screen_remap(p1.x, min_x, max_x, width_d2) + width_d2
@@ -635,14 +632,14 @@ function onDraw()
     last_point = path[#path]
     if last_point.y == 0 or reached_warp or reached_moon then
 
-        LifeBoatAPI.LBColorSpace.lbcolorspace_setColorGammaCorrected(200, 0, 200, 255) -- Warp X color
+        screen.setColor(117, 0, 117) -- Warp X color
 
         if last_point.y == 0 then
-            LifeBoatAPI.LBColorSpace.lbcolorspace_setColorGammaCorrected(255, 0, 0, 255) -- Impact X color
+            screen.setColor(255, 0, 0) -- Impact X color
         end
 
         if reached_moon then
-            LifeBoatAPI.LBColorSpace.lbcolorspace_setColorGammaCorrected(0, 0, 200, 255) -- Moon X color
+            screen.setColor(0, 0, 117) -- Moon X color
         end
 
         local cx = math.floor(screen_remap(last_point.x, min_x, max_x, width_d2) + width_d2)
@@ -655,7 +652,7 @@ function onDraw()
     local ship_x = screen_remap(X[1], min_x, max_x, width_d2) + width_d2
     local ship_y = screen_remap(Z[1], max_z, min_z, reduced_height)
 
-    LifeBoatAPI.LBColorSpace.lbcolorspace_setColorGammaCorrected(200, 200, 200, 255)
+    screen.setColor(117, 117, 117)
     screen.drawCircleF(ship_x, ship_y, 1)
 
     -- Prep for render 1
@@ -666,7 +663,7 @@ function onDraw()
     screen.drawRectF(0, 0, width_d2, reduced_height)
 
     -- Draw seperation line between render 1 and render 2
-    LifeBoatAPI.LBColorSpace.lbcolorspace_setColorGammaCorrected(150, 150, 150, 255)
+    screen.setColor(47, 47, 47)
     screen.drawLine(width_d2, 0, width_d2, reduced_height)
 
     -- Do render 1
@@ -703,7 +700,7 @@ function onDraw()
 
     -- Draw earth
 
-    LifeBoatAPI.LBColorSpace.lbcolorspace_setColorGammaCorrected(0, 255, 255, 255)
+    screen.setColor(0, 255, 255)
 
     drawQuads({
         {ax = 1.28 * K, ay = .4 * K, bx = 1.28 * K, by = 0, cx = -1.28 * K, cy = 0, dx = -1.28 * K, dy = .4 * K},        
@@ -712,7 +709,7 @@ function onDraw()
 
     -- Draw Moon
 
-    LifeBoatAPI.LBColorSpace.lbcolorspace_setColorGammaCorrected(255, 255, 255, 255)
+    screen.setColor(255, 255, 255)
 
     drawQuads({
         {ax= 1.845 * K, ay = .8 * K, bx = 2.155 * K, by = .8 * K, cx= 2.155 * K, cy = .6 * K, dx = 1.845 * K, dy = .6 * K}
@@ -722,7 +719,7 @@ function onDraw()
 
     line_pos = screen_remap(3*K, max_y, min_y, reduced_height)
 
-    LifeBoatAPI.LBColorSpace.lbcolorspace_setColorGammaCorrected(0, 0, 150, 255)
+    screen.setColor(0, 0, 47)
     screen.drawLine(0, line_pos, width_d2, line_pos)
 
     -- Draw Leftward position wrapping
@@ -730,7 +727,7 @@ function onDraw()
     line_pos = screen_remap(1.28*K, max_y, min_y, reduced_height)
     line_x_pos = screen_remap(-.4*K, min_x, max_x, width_d2)
 
-    LifeBoatAPI.LBColorSpace.lbcolorspace_setColorGammaCorrected(200, 0, 200, 255)
+    screen.setColor(117, 0, 117)
     if line_x_pos > 0 then
         screen.drawLine(0, line_pos, line_x_pos, line_pos)
     end
@@ -757,10 +754,10 @@ function onDraw()
         local p1 = path[i - 1]
         local p2 = path[i]
 
-        LifeBoatAPI.LBColorSpace.lbcolorspace_setColorGammaCorrected(0, 200, 0, 255)
+        screen.setColor(0, 117, 0)
 
         if p2.y > 3 * K then
-            LifeBoatAPI.LBColorSpace.lbcolorspace_setColorGammaCorrected(255, 0, 0, 255)
+            screen.setColor(255, 0, 0)
         end
         
         local x1 = screen_remap(p1.x, min_x, max_x, width_d2)
@@ -776,14 +773,14 @@ function onDraw()
     last_point = path[#path]
     if last_point.y == 0 or reached_warp or reached_moon then
 
-        LifeBoatAPI.LBColorSpace.lbcolorspace_setColorGammaCorrected(200, 0, 200, 255) -- Warp X color
+        screen.setColor(117, 0, 117) -- Warp X color
 
         if last_point.y == 0 then
-            LifeBoatAPI.LBColorSpace.lbcolorspace_setColorGammaCorrected(255, 0, 0, 255) -- Impact X color
+            screen.setColor(255, 0, 0) -- Impact X color
         end
 
         if reached_moon then
-            LifeBoatAPI.LBColorSpace.lbcolorspace_setColorGammaCorrected(0, 0, 200, 255) -- Moon X color
+            screen.setColor(0, 0, 117) -- Moon X color
         end
 
         local cx = math.floor(screen_remap(last_point.x, min_x, max_x, width_d2))
@@ -797,12 +794,12 @@ function onDraw()
     local ship_x = screen_remap(X[1], min_x, max_x, width_d2)
     local ship_y = screen_remap(Y[1], max_y, min_y, reduced_height)
 
-    LifeBoatAPI.LBColorSpace.lbcolorspace_setColorGammaCorrected(200, 200, 200, 255)
+    screen.setColor(117, 117, 117)
     screen.drawCircleF(ship_x, ship_y, 1)
 
     -- Draw Controls
 
-    LifeBoatAPI.LBColorSpace.lbcolorspace_setColorGammaCorrected(150, 150, 150, 255)
+    screen.setColor(47, 47, 47)
     screen.drawRectF(0, height - CONTROLS_HEIGHT, width, CONTROLS_HEIGHT)
 
 
@@ -818,7 +815,7 @@ function onDraw()
 
         Flash_Timer = Flash_Timer + 1
 
-        LifeBoatAPI.LBColorSpace.lbcolorspace_setColorGammaCorrected(200, 0, 200, 255)
+        screen.setColor(117, 0, 117)
         if math.floor((Flash_Timer % 90) / 60) < 1 then
             screen.drawText(2,2,"WARP")
         end
