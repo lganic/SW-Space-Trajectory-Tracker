@@ -417,6 +417,7 @@ function onDraw()
             local lerp_value = (.8 * K - y_pos) / (n_y_pos - y_pos)
             n_x_pos = (n_x_pos - x_pos) * lerp_value + x_pos
             n_z_pos = (n_z_pos - z_pos) * lerp_value + z_pos
+            n_y_pos = .8 * K
             
             satisfied = true
             reached_moon = true
