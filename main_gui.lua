@@ -508,7 +508,14 @@ function onDraw()
         max_z = math.max(max_z, 15500)
     end
 
-    -- TODO: Target view focusing
+    if Focus_Target then
+        min_x = math.min(min_x, Target_X)
+        max_x = math.max(max_x, Target_X)
+        min_y = math.min(min_y, Target_Y)
+        max_y = math.max(max_y, Target_Y)
+        min_z = math.min(min_z, Target_Z)
+        max_z = math.max(max_z, Target_Z)
+    end
 
     -- Render everything, based on bounding.
 
