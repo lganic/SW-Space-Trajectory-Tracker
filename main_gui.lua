@@ -357,6 +357,8 @@ function onTick()
 	P_Z = sub(Ppred, scaleMat(Ppred, dot(KM, H)))
 
     Ground_Velocity = math.sqrt((X[2] ^ 2) + (Z[2] ^ 2))
+
+    Current_Time = Current_Time + 1 / 60
 end
 
 function onDraw()
