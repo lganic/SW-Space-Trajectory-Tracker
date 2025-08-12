@@ -110,6 +110,8 @@ Target_X = 0
 Target_Y = 0
 Target_Z = 0
 
+Current_Time = 0
+
 function adjust_bounding(current, target)
     return (target - current) * .1 + current
 end
@@ -678,7 +680,14 @@ function onDraw()
     local ship_y = screen_remap(Z[1], max_z, min_z, reduced_height)
 
     screen.setColor(117, 117, 117)
-    screen.drawCircleF(ship_x, ship_y, 1)
+    screen.drawCircle(ship_x, ship_y, 1)
+
+    -- Draw Target
+    local tgt_x = screen_remap(Target_X, min_x, max_x, width_d2) + width_d2
+    local tgt_y = screen_remap(Target_Z, max_z, min_z, reduced_height)
+
+    screen.setColor(0, 255, 0)
+    screen.drawCircle(tgt_x, tgt_y, 2)
 
     -- Prep for render 1
 
@@ -820,7 +829,14 @@ function onDraw()
     local ship_y = screen_remap(Y[1], max_y, min_y, reduced_height)
 
     screen.setColor(117, 117, 117)
-    screen.drawCircleF(ship_x, ship_y, 1)
+    screen.drawCircle(ship_x, ship_y, 1)
+
+    -- Draw Target
+    local tgt_x = screen_remap(Target_X, min_x, max_x, width_d2)
+    local tgt_y = screen_remap(Target_Y, max_y, min_y, reduced_height)
+
+    screen.setColor(0, 255, 0)
+    screen.drawCircle(tgt_x, tgt_y, 2)
 
     -- Draw Controls
 
