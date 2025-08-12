@@ -277,7 +277,10 @@ function pointInWarpZone(x, y, z)
             return not pointInSquare(0, 0, x, z, .8 * K)
         end
     else
-        -- Once I figure out if there are moon side warp zones, they will go here.
+        if y < 1.28 * K then
+            return not pointInSquare(2 * K, 0 , x, z, 31000)
+        end
+
         return false
     end
 
