@@ -353,6 +353,9 @@ function onTick()
     Ground_Velocity = math.sqrt((X[2] ^ 2) + (Z[2] ^ 2))
 end
 
+function quadCompact(ax,ay,bx,by,cx,cy,dx,dy)
+    return {ax = ax,  ay = ay,  bx = bx,  by = by,  cx = cx,  cy = cy, dx = dx,  dy = dy}
+end
 
 function onDraw()
     local width = screen.getWidth()
@@ -368,20 +371,20 @@ function onDraw()
         screen.setColor(3, 8, 196)
 
         drawQuads({
-            {ax = 10,  ay = 10,  bx = 15,  by = 30,  cx = 20,  cy = 30,  dx = 15,  dy = 10},
-            {ax = 11,  ay = 10,  bx = 16,  by = 14,  cx = 27,  cy = 14,  dx = 26,  dy = 10},
+            quadCompact(10, 10, 15, 30, 20, 30, 15, 10),
+            quadCompact(11, 10, 16, 14, 27, 14, 26, 10),
 
-            {ax = 28,  ay = 10,  bx = 35,  by = 38,  cx = 39,  cy = 38,  dx = 32,  dy = 10},
-            {ax = 15,  ay = 34,  bx = 16,  by = 38,  cx = 62,  cy = 38,  dx = 61,  dy = 34},
-
-            {ax = 34,  ay = 10,  bx = 39,  by = 30,  cx = 42,  cy = 30,  dx = 37,  dy = 10},
-            {ax = 40,  ay = 30,  bx = 48,  by = 30,  cx = 47,  cy = 26,  dx = 39,  dy = 26},
-            {ax = 38,  ay = 22,  bx = 46,  by = 22,  cx = 45,  cy = 18,  dx = 37,  dy = 18},
-            {ax = 37,  ay = 14,  bx = 44,  by = 14,  cx = 43,  cy = 10,  dx = 37,  dy = 10},
-
-            {ax = 45,  ay = 10,  bx = 50,  by = 30,  cx = 53,  cy = 30,  dx = 48,  dy = 10},
-            {ax = 50,  ay = 30,  bx = 60,  by = 30,  cx = 59,  cy = 26,  dx = 49,  dy = 26},
-            {ax = 46,  ay = 14,  bx = 56,  by = 14,  cx = 55,  cy = 10,  dx = 45,  dy = 10}
+            quadCompact(28, 10, 35, 38, 39, 38, 32, 10),
+            quadCompact(15, 34, 16, 38, 62, 38, 61, 34),
+            
+            quadCompact(34, 10, 39, 30, 42, 30, 37, 10),
+            quadCompact(40, 30, 48, 30, 47, 26, 39, 26),
+            quadCompact(38, 22, 46, 22, 45, 18, 37, 18),
+            quadCompact(37, 14, 44, 14, 43, 10, 37, 10),
+            
+            quadCompact(45, 10, 50, 30, 53, 30, 48, 10),
+            quadCompact(50, 30, 60, 30, 59, 26, 49, 26),
+            quadCompact(46, 14, 56, 14, 55, 10, 45, 10)
         }, 5, 68, 2, 45, width, height, 0)
 
         return
