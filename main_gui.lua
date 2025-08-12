@@ -151,9 +151,13 @@ function drawQuads(quads, minx, maxx, miny, maxy, width, height, add_x)
     end
 end
 
+function quadCompact(ax,ay,bx,by,cx,cy,dx,dy)
+    return {ax = ax,  ay = ay,  bx = bx,  by = by,  cx = cx,  cy = cy, dx = dx,  dy = dy}
+end
+
 function qDrawMap(x, y, width, height, min_x, max_x, min_z, max_z, screen_width, screen_height)
     drawQuads({
-        {ax = x, ay = y, bx = x, by = y + height, cx = x + width, cy = y + height, dx = x + width, dy = y},        
+        quadCompact(x, y, x, y + height, x + width, y + height, x + width, y)
     }, min_x, max_x, min_z, max_z, screen_width, screen_height, screen_width)
 end
 
@@ -351,10 +355,6 @@ function onTick()
 	P_Z = sub(Ppred, scaleMat(Ppred, dot(KM, H)))
 
     Ground_Velocity = math.sqrt((X[2] ^ 2) + (Z[2] ^ 2))
-end
-
-function quadCompact(ax,ay,bx,by,cx,cy,dx,dy)
-    return {ax = ax,  ay = ay,  bx = bx,  by = by,  cx = cx,  cy = cy, dx = dx,  dy = dy}
 end
 
 function onDraw()
@@ -728,8 +728,8 @@ function onDraw()
     screen.setColor(0, 255, 255)
 
     drawQuads({
-        {ax = 1.28 * K, ay = .4 * K, bx = 1.28 * K, by = 0, cx = -1.28 * K, cy = 0, dx = -1.28 * K, dy = .4 * K},        
-        {ax = .4 * K, ay = 1.28 * K, bx = .4 * K, by = .4 * K, cx = -.4 * K, cy = .4 * K, dx = -.4 * K, dy = 1.28 * K}        
+        quadCompact(1.28 * K,.4 * K, 1.28 * K, 0, -1.28 * K, 0, -1.28 * K,  .4 * K),
+        quadCompact(.4 * K, 1.28 * K, .4 * K, .4 * K, -.4 * K, .4 * K, -.4 * K, 1.28 * K)        
     }, min_x, max_x, min_y, max_y, width_d2, reduced_height, 0)
 
     -- Draw Moon
@@ -737,7 +737,7 @@ function onDraw()
     screen.setColor(255, 255, 255)
 
     drawQuads({
-        {ax= 1.845 * K, ay = .8 * K, bx = 2.155 * K, by = .8 * K, cx= 2.155 * K, cy = .6 * K, dx = 1.845 * K, dy = .6 * K}
+        quadCompact(1.845 * K, .8 * K, 2.155 * K, .8 * K, 2.155 * K, .6 * K, 1.845 * K, .6 * K)
     }, min_x, max_x, min_y, max_y, width_d2, reduced_height, 0)
 
     -- Draw Geostationary orbit line.
