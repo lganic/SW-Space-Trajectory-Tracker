@@ -126,7 +126,7 @@ function accel(v, d)
 end
 
 function screen_remap(location, min_range, max_range, screen_size)
-    return screen_size * math.min(math.max((location - min_range) / (max_range - min_range), 0), 1)
+    return math.floor(screen_size * math.min(math.max((location - min_range) / (max_range - min_range), 0), 1))
 end
 
 function drawQuads(quads, minx, maxx, miny, maxy, width, height, add_x)
