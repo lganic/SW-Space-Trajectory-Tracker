@@ -551,6 +551,12 @@ function onDraw()
         Render2_Max_Z = adjust_bounding(Render2_Max_Z, max_z)
     end
 
+    -- This variable is used to animate the minute markers on the path
+    increments_per_minute = math.floor(60 / delta_t)
+    increment_offset = increments_per_minute - math.floor((Current_Time - 60 * math.floor(Current_Time / 60)) / delta_t)
+
+    minute_points = {}
+
     -- Do render 2
 
     min_x = Render2_Min_X
@@ -633,8 +639,9 @@ function onDraw()
     screen.drawLine(end_x, end_y, start_x, end_y)
     screen.drawLine(start_x, end_y, start_x, start_y)
 
-    -- Draw the upper atmosphere warp zone
+    -- Draw the path
 
+    path_minute_tracker = increment_offset
 
     for i = 2, #path do
         local p1 = path[i - 1]
@@ -652,6 +659,12 @@ function onDraw()
         local y2 = screen_remap(p2.z, max_z, min_z, reduced_height)
 
         screen.drawLine(x1, y1, x2, y2)
+
+        path_minute_tracker = path_minute_tracker - 1
+        if path_minute_tracker == 0 then
+            table.insert(minute_points, {x = x1, y = y1}) -- Save the point, so we can render it later (So we can ensure that it renders on top)
+            path_minute_tracker = increments_per_minute
+        end
     end
 
     -- If last point is an impact point, or a warp point, then draw an X there. 
@@ -784,6 +797,8 @@ function onDraw()
 
     -- Render the path
 
+    path_minute_tracker = increment_offset
+
     for i = 2, #path do
         local p1 = path[i - 1]
         local p2 = path[i]
@@ -800,6 +815,12 @@ function onDraw()
         local y2 = screen_remap(p2.y, max_y, min_y, reduced_height)
 
         screen.drawLine(x1, y1, x2, y2)
+
+        path_minute_tracker = path_minute_tracker - 1
+        if path_minute_tracker == 0 then
+            table.insert(minute_points, {x = x1, y = y1}) -- Save the point, so we can render it later (So we can ensure that it renders on top)
+            path_minute_tracker = increments_per_minute
+        end
     end
 
     -- If last point is an impact point, or a warp point, then draw an X there. 
@@ -860,6 +881,13 @@ function onDraw()
         if math.floor((Flash_Timer % 90) / 60) < 1 then
             screen.drawText(2,2,"WARP")
         end
+    end
+
+    -- Render all the minute marks that we generated earlier
+
+    screen.setColor(255, 255, 255)
+    for i, p in ipairs(minute_points) do
+        screen.drawRectF(p.x, p.y, 1, 1)
     end
 end
 
