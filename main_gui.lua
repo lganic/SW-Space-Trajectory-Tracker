@@ -106,6 +106,10 @@ Flash_Timer = 0
 
 MIN_MAP_SCALE = 100
 
+Target_X = 0
+Target_Y = 0
+Target_Z = 0
+
 function adjust_bounding(current, target)
     return (target - current) * .1 + current
 end
@@ -287,6 +291,19 @@ function pointInWarpZone(x, y, z)
     return false
 end
 
+function astroToReal(x, y)
+    if y < 1.28 * K then
+        return x, y
+    end
+
+    if y > 442159.265359 then
+        return 2 * K - x, 570159.265359 - y
+    end
+
+    theta = (y - 1.28 * K) / K
+    return K - ((K - x) * math.cos(y / K - 1.28)), 1.28 * K + ((K - x) * math.sin(y / K - 1.28))
+end
+
 function onTick()
 	moonmode = input.getBool(1)
 	x = input.getNumber(1)
@@ -297,15 +314,17 @@ function onTick()
     Touch_Y = input.getNumber(8)
     Is_Touch = input.getBool(1)
 
-    -- Astronomy to real coordinates
-	theta = (y - 1.28 * K) / K
-    if y > 442159.265359 then
-        x = 2 * K - x
-        y = 570159.265359 - y
-    elseif y > 1.28 * K then
-        xn = K - ((K - x) * math.cos(y / K - 1.28))
-        y = 1.28 * K + ((K - x) * math.sin(y / K - 1.28))
-        x=xn
+    Target_X = input.getNumber(9)
+    Target_Y = input.getNumber(10)
+    Target_Z = input.getNumber(11)
+    is_target_astronomy = input.getBool(2)
+
+    -- Astronomy to real coordinates (my position)
+	x, y = astroToReal(x, y)
+
+    -- Astronomy to real coordinates (Target position)
+    if is_target_astronomy then
+        Target_X, Target_Y = astroToReal(Target_X, Target_Y)
     end
 
     -- Apply Kalman Filters
