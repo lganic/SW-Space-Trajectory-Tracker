@@ -621,7 +621,8 @@ function onDraw()
     else
         -- Offset the X location to the right hand side of the screen
         map_location_x = map_location_x - .25 * zoom * 1000
-        map_location_z = map_location_z - (CONTROLS_HEIGHT * zoom * 1000) / width -- something is wrong here, but only slightly wrong
+        -- map_location_z = map_location_z - (CONTROLS_HEIGHT * zoom * 1000) / width -- something is wrong here, but only slightly wrong
+        map_location_z = map_location_z - (height * CONTROLS_HEIGHT * zoom * 1000) / (width * width) -- something is wrong here, but only slightly wrong
 
         screen.drawMap(map_location_x, map_location_z, zoom)
     end
@@ -779,6 +780,21 @@ function onDraw()
     if line_x_pos > 0 then
         screen.drawLine(0, line_pos, line_x_pos, line_pos)
     end
+
+    
+    -- Draw moon warp zones
+    start_x = screen_remap(1.6 * K, min_x, max_x, width_d2)
+    end_x = screen_remap(1.845 * K, min_x, max_x, width_d2)
+    line_height = screen_remap(1.28 * K, max_y, min_y, reduced_height)
+    moon_height = screen_remap(.8 * K, max_y, min_y, reduced_height)
+
+    screen.drawLine(start_x, line_height, end_x, line_height)
+    screen.drawLine(end_x, line_height, end_x, moon_height)
+
+    line_pos = screen_remap(2.155 * K, min_x, max_x, width_d2)
+
+    screen.drawLine(line_pos, line_height, width_d2, line_height)
+    screen.drawLine(line_pos, line_height, line_pos, moon_height)
 
     -- Draw the upper atmosphere warp zone
     start_x = screen_remap(-.4 * K, min_x, max_x, width_d2)
