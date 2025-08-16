@@ -97,7 +97,8 @@ Touch_Y = 0
 Is_Touch = false
 Action_Taken = false
 
-LOGO_FRAME_TIME = 1
+Logo_Frame_Counter = 0
+LOGO_FRAME_TIME = 60
 
 CONTROLS_HEIGHT = 11
 
@@ -377,7 +378,8 @@ function onDraw()
     local aspect_ratio = (width_d2 / reduced_height)
 
     -- Display Logo
-    if Current_Time < LOGO_FRAME_TIME then
+    if Logo_Frame_Counter < LOGO_FRAME_TIME then
+        Logo_Frame_Counter = Logo_Frame_Counter + 1
         screen.setColor(3, 8, 196)
 
         drawQuads({
