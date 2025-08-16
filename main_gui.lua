@@ -111,6 +111,8 @@ Target_Z = 0
 
 Current_Time = 0
 
+Is_Target_Astronomy = false
+
 function adjust_bounding(current, target)
     return (target - current) * .1 + current
 end
@@ -329,13 +331,12 @@ function onTick()
     Target_X = input.getNumber(9)
     Target_Y = input.getNumber(10)
     Target_Z = input.getNumber(11)
-    is_target_astronomy = input.getBool(2)
 
     -- Astronomy to real coordinates (my position)
 	x, y = astroToReal(x, y)
 
     -- Astronomy to real coordinates (Target position)
-    if is_target_astronomy then
+    if Is_Target_Astronomy then
         Target_X, Target_Y = astroToReal(Target_X, Target_Y)
     end
 
@@ -868,7 +869,9 @@ function onDraw()
     Focus_Path = simple_button(1, focus_boxpos, "Pth", Focus_Path)
     Focus_Moon = simple_button(20, focus_boxpos, "Moon", Focus_Moon)
     Focus_Target = simple_button(44, focus_boxpos, "Tgt", Focus_Target)
-    Focus_Earth = simple_button(63, focus_boxpos, "Earth", Focus_Earth)
+    Focus_Earth = simple_button(63, focus_boxpos, "Erth", Focus_Earth)
+
+    Is_Target_Astronomy = simple_button(87, focus_boxpos, "A", Is_Target_Astronomy)
 
     if reached_warp then
         -- Display some flashing "warp" text.
