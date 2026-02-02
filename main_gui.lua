@@ -622,7 +622,7 @@ function onDraw()
         -- Offset the X location to the right hand side of the screen
         map_location_x = map_location_x - .25 * zoom * 1000
         -- map_location_z = map_location_z - (CONTROLS_HEIGHT * zoom * 1000) / width -- something is wrong here, but only slightly wrong
-        map_location_z = map_location_z - (height * CONTROLS_HEIGHT * zoom * 1000) / (width * width) -- something is wrong here, but only slightly wrong
+        map_location_z = map_location_z - (height * CONTROLS_HEIGHT * zoom * 1000) / (width * width)
 
         screen.drawMap(map_location_x, map_location_z, zoom)
     end
